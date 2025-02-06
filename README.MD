@@ -14,6 +14,8 @@ The infrastructure includes:
 
 ## Infrastructure Components
 
+![Architecture Diagram](image/1LAS.jpg)
+
 ### 1. **S3 Buckets**
 
 - `source_bucket`: Stores raw files.

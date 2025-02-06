@@ -20,6 +20,7 @@ resource "aws_cloudfront_distribution" "cdn" {
     cached_methods         = ["GET", "HEAD"]
     target_origin_id       = "S3Origin"
     viewer_protocol_policy = "redirect-to-https"
+    compress               = true
   }
 
   restrictions {

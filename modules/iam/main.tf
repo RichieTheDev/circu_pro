@@ -14,13 +14,14 @@ resource "aws_iam_role" "lambda_exec" {
 # IAM policy for Lambda to access S3
 resource "aws_iam_policy" "lambda_s3_access" {
   name        = "lambda_s3_access_policy"
-  description = "Policy allowing Lambda to access the S3 buckets"
+  description = "Policy allowing Lambda to access specific S3 buckets"
   policy = jsonencode({
     Version = "2012-10-17",
-    Statement = [{
-      Effect   = "Allow"
-      Action   = ["s3:ListBucket"]
-      Resource = var.source_bucket_arn
+    Statement = [
+      {
+        Effect   = "Allow"
+        Action   = ["s3:ListBucket"]
+        Resource = var.source_bucket_arn
       },
       {
         Effect = "Allow"
@@ -29,7 +30,8 @@ resource "aws_iam_policy" "lambda_s3_access" {
           "${var.source_bucket_arn}/*",
           "${var.consolidated_bucket_arn}/*"
         ]
-    }]
+      }
+    ]
   })
 }
 
