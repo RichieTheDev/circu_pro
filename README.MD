@@ -14,7 +14,7 @@ The infrastructure includes:
 
 ## Infrastructure Components
 
-![Architecture Diagram](image/1LAS.jpg) ![Step 1 Diagram](image/1newa.jpg) ![Step2](image/1newb.jpg) ![step3](image/1newc.jpg)
+![Architecture Diagram](image/1LAS.jpg)
 
 ### 1. **S3 Buckets**
 
@@ -98,3 +98,5 @@ vpc_id = "your-vpc-id"
 transit_gateway_id = "your-transit-gateway-id"
 
 ```
+
+![Step 1 Diagram](image/1newa.jpg) ![Step2](image/1newb.jpg) ![step3](image/1newc.jpg)
