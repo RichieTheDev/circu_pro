@@ -1,4 +1,4 @@
-# AWS Infrastructure Setup with Terraform
+# Cloud Infrastructure for Automation Recipe Management
 
 This project sets up an AWS infrastructure using Terraform, including S3 buckets, a Lambda function, CloudFront distribution, and a VPN setup.
 
@@ -98,8 +98,6 @@ vpc_id = "your-vpc-id"
 transit_gateway_id = "your-transit-gateway-id"
 
 ```
-
-# Cloud Infrastructure for Automation Recipe Management
 
 ## Insights
 
