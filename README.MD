@@ -14,7 +14,7 @@ The infrastructure includes:
 
 ## Infrastructure Components
 
-![Architecture Diagram](image/1LAS.jpg)
+![Architecture Diagram](image/1LAS.jpg) ![Step 1 Diagram](image/1newa.jpg) ![Step2](image/1newb.jpg) ![step3](image/1newc.jpg)
 
 ### 1. **S3 Buckets**
 
