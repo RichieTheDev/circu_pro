@@ -1,4 +1,3 @@
-````markdown
 # AWS Infrastructure Setup with Terraform
 
 This project sets up an AWS infrastructure using Terraform, including S3 buckets, a Lambda function, CloudFront distribution, and a VPN setup.
@@ -47,11 +46,12 @@ The infrastructure includes:
 ### Steps
 
 1. Clone this repository:
+
    ```sh
-   git clone <repo-url>
-   cd <repo-directory>
+   git clone https://github.com/RichieTheDev/circu_project.git
+   cd circu_project
+
    ```
-````
 
 2. Initialize Terraform:
    ```sh
@@ -94,12 +94,5 @@ lambda_function_name = "your-lambda-function"
 customer_gateway_ip = "your-public-ip"
 vpc_id = "your-vpc-id"
 transit_gateway_id = "your-transit-gateway-id"
-```
-
-## License
-
-This project is licensed under the MIT License.
-
-```
 
 ```
