@@ -1,8 +1,9 @@
+# Deploy Lambda function to process S3 objects
 resource "aws_lambda_function" "zipper" {
-  filename      = "lambda_function.zip" # This zip must contain your Python code (see below)
+  filename      = "lambda_function.zip"
   function_name = var.lambda_function_name
   role          = var.lambda_role_arn
-  handler       = "index.lambda_handler" # Make sure your zip file has an index.py file with lambda_handler() defined
+  handler       = "index.lambda_handler"
   runtime       = "python3.8"
   memory_size   = 1024
   timeout       = 180
@@ -13,5 +14,4 @@ resource "aws_lambda_function" "zipper" {
       CONSOLIDATED_BUCKET = var.consolidated_bucket
     }
   }
-
 }

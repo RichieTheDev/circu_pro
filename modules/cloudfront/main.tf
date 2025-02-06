@@ -1,8 +1,9 @@
+# Create an Origin Access Identity (OAI) for CloudFront to securely access S3
 resource "aws_cloudfront_origin_access_identity" "oai" {
   comment = "OAI for CloudFront"
 }
 
-
+# Create a CloudFront distribution for serving content from S3
 resource "aws_cloudfront_distribution" "cdn" {
   origin {
     domain_name = var.s3_origin_domain_name
