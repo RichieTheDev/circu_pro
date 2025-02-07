@@ -113,7 +113,9 @@ transit_gateway_id = "your-transit-gateway-id"
 
 - **Benefits**: Reduces latency, optimizes bandwidth, and provides system resilience.
 - **Pitfalls**: Security concerns, complexity in device management, and limited resources on edge devices.
-- **Considerations**: Balance edge vs. cloud processing, secure communication, and manage distributed devices effectively.
+- **Considerations**: If robotic arms need low-latency access to recipe files, consider:
+  AWS IoT Greengrass for local processing of files.
+  AWS Outposts for on-prem cloud computing close to factory robots.
 
 ---
 
@@ -121,7 +123,12 @@ transit_gateway_id = "your-transit-gateway-id"
 
 - **Benefits**: Cost-effective storage with S3/CloudFront, serverless compute with Lambda.
 - **Pitfalls**: Egress charges, Lambda execution time, and over-provisioning.
-- **Considerations**: Optimize data transfer, use auto-scaling, and monitor costs regularly.
+- **Considerations**:Reduce Lambda Costs:
+  Using Amazon S3 Batch Operations instead of Lambda for bulk operations reduces execution time and costs.
+  Storage Optimization:
+  Enable S3 Intelligent-Tiering to automatically move infrequently accessed files to cheaper storage.
+  Data Transfer Costs:
+  Serving files directly from S3 (if access control allows) can reduce CloudFront egress costs.
 
 ---
 

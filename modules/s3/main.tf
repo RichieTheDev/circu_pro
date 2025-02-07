@@ -6,6 +6,7 @@ resource "aws_s3_bucket" "source" {
 # Create an S3 bucket for storing consolidated (zipped) files
 resource "aws_s3_bucket" "consolidated" {
   bucket = var.consolidated_bucket # Name of the consolidated S3 bucket
+
 }
 
 # Enable versioning on the source bucket to track changes and retain file history
@@ -47,7 +48,7 @@ resource "aws_s3_bucket_server_side_encryption_configuration" "source" {
   bucket = aws_s3_bucket.source.id
   rule {
     apply_server_side_encryption_by_default {
-      sse_algorithm = "AES256" # Use AES-256 encryption for securing stored objects
+      sse_algorithm = "aws:kms" # Use kms encryption for securing stored objects
     }
   }
 }
@@ -57,7 +58,39 @@ resource "aws_s3_bucket_server_side_encryption_configuration" "consolidated" {
   bucket = aws_s3_bucket.consolidated.id
   rule {
     apply_server_side_encryption_by_default {
-      sse_algorithm = "AES256" # Use AES-256 encryption to protect stored data
+      sse_algorithm = "aws:kms" # Use kms encryption to protect stored data
     }
+  }
+}
+#block public aaccess
+resource "aws_s3_bucket_public_access_block" "example" {
+  bucket = aws_s3_bucket.source.id
+
+  block_public_acls       = true
+  block_public_policy     = true
+  ignore_public_acls      = true
+  restrict_public_buckets = true
+}
+resource "aws_s3_bucket_public_access_block" "example" {
+  bucket = aws_s3_bucket.consolidated.id
+
+  block_public_acls       = true
+  block_public_policy     = true
+  ignore_public_acls      = true
+  restrict_public_buckets = true
+}
+#lifecyle
+resource "aws_s3_bucket_lifecycle_configuration" "example" {
+  bucket = aws_s3_bucket.consolidated.id
+
+  rule {
+    id = "rule-1"
+
+    transition {
+      days          = 365
+      storage_class = "GLACIER_IR"
+    }
+
+    status = "Enabled"
   }
 }
