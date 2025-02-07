@@ -66,15 +66,12 @@ resource "aws_s3_bucket_server_side_encryption_configuration" "consolidated" {
 #lifecyle
 resource "aws_s3_bucket_lifecycle_configuration" "example" {
   bucket = aws_s3_bucket.consolidated.id
-
   rule {
     id = "rule-1"
-
     transition {
       days          = 365
       storage_class = "GLACIER_IR"
     }
-
     status = "Enabled"
   }
 }

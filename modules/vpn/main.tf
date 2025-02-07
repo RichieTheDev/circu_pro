@@ -1,20 +1,20 @@
 # Create a Direct Connect Gateway
 resource "aws_dx_gateway" "vpn_gateway" {
-  name            = "terraform_ipsec_vpn_gateway"
-  amazon_side_asn = "64512"
+  name            = var.dx_gateway_name
+  amazon_side_asn = var.dx_gateway_asn
 }
 
 # Create a Transit Gateway for network routing
 resource "aws_ec2_transit_gateway" "vpn_transit_gateway" {
-  amazon_side_asn             = "64513"
-  description                 = "VPN and Direct Connect Transit Gateway"
-  transit_gateway_cidr_blocks = ["10.0.0.0/24"]
+  amazon_side_asn             = var.transit_gateway_asn
+  description                 = var.transit_gateway_description
+  transit_gateway_cidr_blocks = var.transit_gateway_cidr
 }
 
 # Create a Customer Gateway (on-premises VPN endpoint)
 resource "aws_customer_gateway" "customer_gateway" {
-  bgp_asn    = 64514
-  ip_address = "10.0.0.1"
+  bgp_asn    = var.customer_gateway_bgp_asn
+  ip_address = var.customer_gateway_ip
   type       = "ipsec.1"
 }
 
@@ -22,8 +22,7 @@ resource "aws_customer_gateway" "customer_gateway" {
 resource "aws_dx_gateway_association" "vpn_gateway_association" {
   dx_gateway_id         = aws_dx_gateway.vpn_gateway.id
   associated_gateway_id = aws_ec2_transit_gateway.vpn_transit_gateway.id
-
-  allowed_prefixes = ["10.0.0.0/8"]
+  allowed_prefixes      = var.vpn_allowed_prefixes
 }
 
 # Establish VPN connection (Using Transit Gateway)
