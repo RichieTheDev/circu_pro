@@ -103,7 +103,7 @@ This project sets up a secure and automated AWS cloud infrastructure using **Ter
    ```
 1b. **Clone from github**
     
-    ```bash
+    ```
     git clone https://github.com/RichieTheDev/circu_pro.git
     ```
 
