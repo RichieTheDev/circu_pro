@@ -26,7 +26,7 @@ resource "aws_dx_gateway_association" "vpn_gateway_association" {
   allowed_prefixes = ["10.0.0.0/8"]
 }
 
-# Establish VPN connection
+# Establish VPN connection (Using Transit Gateway)
 resource "aws_vpn_connection" "vpn_connection" {
   customer_gateway_id = aws_customer_gateway.customer_gateway.id
   transit_gateway_id  = aws_ec2_transit_gateway.vpn_transit_gateway.id

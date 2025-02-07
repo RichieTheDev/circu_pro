@@ -18,11 +18,16 @@ resource "aws_iam_policy" "lambda_s3_access" {
   policy = jsonencode({
     Version = "2012-10-17",
     Statement = [
+      # Allow Lambda to list both source and consolidated buckets
       {
-        Effect   = "Allow"
-        Action   = ["s3:ListBucket"]
-        Resource = var.source_bucket_arn
+        Effect = "Allow"
+        Action = ["s3:ListBucket"]
+        Resource = [
+          var.source_bucket_arn,
+          var.consolidated_bucket_arn
+        ]
       },
+      # Allow Lambda to Get/Put objects in both S3 buckets
       {
         Effect = "Allow"
         Action = ["s3:GetObject", "s3:PutObject"]
@@ -30,7 +35,8 @@ resource "aws_iam_policy" "lambda_s3_access" {
           "${var.source_bucket_arn}/*",
           "${var.consolidated_bucket_arn}/*"
         ]
-      }
+      },
+
     ]
   })
 }
