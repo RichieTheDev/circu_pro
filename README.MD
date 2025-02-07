@@ -102,10 +102,9 @@ This project sets up a secure and automated AWS cloud infrastructure using **Ter
    mv terraform /usr/local/bin/
    ```
 1b. **Clone from github**
-    
-    ```
+   
     git clone https://github.com/RichieTheDev/circu_pro.git
-    ```
+ 
 
 2. **Initialize Terraform**
 
