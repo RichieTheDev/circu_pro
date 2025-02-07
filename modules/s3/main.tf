@@ -1,17 +1,17 @@
 # Create an S3 bucket for storing source files
-resource "aws_s3_bucket" "source" {
+resource "aws_s3_bucket" "source_bucket" {
   bucket = var.source_bucket # Name of the source S3 bucket
 }
 
 # Create an S3 bucket for storing consolidated (zipped) files
-resource "aws_s3_bucket" "consolidated" {
+resource "aws_s3_bucket" "consolidated_bucket" {
   bucket = var.consolidated_bucket # Name of the consolidated S3 bucket
 
 }
 
 # Enable versioning on the source bucket to track changes and retain file history
 resource "aws_s3_bucket_versioning" "source" {
-  bucket = aws_s3_bucket.source.id
+  bucket = aws_s3_bucket.source_bucket.id
   versioning_configuration {
     status = "Enabled" # Enable versioning for better file tracking and recovery
   }
@@ -19,7 +19,7 @@ resource "aws_s3_bucket_versioning" "source" {
 
 # Enable versioning on the consolidated bucket to retain different versions of zip archives
 resource "aws_s3_bucket_versioning" "consolidated" {
-  bucket = aws_s3_bucket.consolidated.id
+  bucket = aws_s3_bucket.consolidated_bucket.id
   versioning_configuration {
     status = "Enabled" # Enable versioning to prevent accidental data loss
   }
@@ -27,7 +27,7 @@ resource "aws_s3_bucket_versioning" "consolidated" {
 
 # Restrict public access to the source bucket for security
 resource "aws_s3_bucket_public_access_block" "source" {
-  bucket                  = aws_s3_bucket.source.id
+  bucket                  = aws_s3_bucket.source_bucket.id
   block_public_acls       = true # Prevent public ACLs
   block_public_policy     = true # Prevent public bucket policies
   ignore_public_acls      = true # Ignore any public ACLs that might be set
@@ -36,7 +36,7 @@ resource "aws_s3_bucket_public_access_block" "source" {
 
 # Restrict public access to the consolidated bucket for security
 resource "aws_s3_bucket_public_access_block" "consolidated" {
-  bucket                  = aws_s3_bucket.consolidated.id
+  bucket                  = aws_s3_bucket.consolidated_bucket.id
   block_public_acls       = true # Prevent public ACLs
   block_public_policy     = true # Prevent public bucket policies
   ignore_public_acls      = true # Ignore any public ACLs that might be set
@@ -45,7 +45,7 @@ resource "aws_s3_bucket_public_access_block" "consolidated" {
 
 # Enable server-side encryption (SSE) on the source bucket for data security
 resource "aws_s3_bucket_server_side_encryption_configuration" "source" {
-  bucket = aws_s3_bucket.source.id
+  bucket = aws_s3_bucket.source_bucket.id
   rule {
     apply_server_side_encryption_by_default {
       sse_algorithm = "aws:kms" # Use kms encryption for securing stored objects
@@ -55,7 +55,7 @@ resource "aws_s3_bucket_server_side_encryption_configuration" "source" {
 
 # Enable server-side encryption (SSE) on the consolidated bucket for data security
 resource "aws_s3_bucket_server_side_encryption_configuration" "consolidated" {
-  bucket = aws_s3_bucket.consolidated.id
+  bucket = aws_s3_bucket.consolidated_bucket.id
   rule {
     apply_server_side_encryption_by_default {
       sse_algorithm = "aws:kms" # Use kms encryption to protect stored data
@@ -65,7 +65,7 @@ resource "aws_s3_bucket_server_side_encryption_configuration" "consolidated" {
 
 #lifecyle
 resource "aws_s3_bucket_lifecycle_configuration" "example" {
-  bucket = aws_s3_bucket.consolidated.id
+  bucket = aws_s3_bucket.consolidated_bucket.id
   rule {
     id = "rule-1"
     transition {
