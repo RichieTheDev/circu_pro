@@ -101,7 +101,10 @@ This project sets up a secure and automated AWS cloud infrastructure using **Ter
    unzip terraform_1.5.0_linux_amd64.zip
    mv terraform /usr/local/bin/
    ```
-
+1b. **Clone from github**
+    ```bash
+    git clone https://github.com/RichieTheDev/circu_pro.git
+    ```
 2. **Initialize Terraform**
 
    ```bash
