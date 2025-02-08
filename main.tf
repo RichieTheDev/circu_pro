@@ -1,5 +1,5 @@
 provider "aws" {
-  region = var.region
+  region = "us-east-1"
 }
 
 # Modules
@@ -7,6 +7,7 @@ module "s3" {
   source              = "./modules/s3"
   source_bucket       = var.source_bucket
   consolidated_bucket = var.consolidated_bucket
+  cloudfront_arn      = module.cloudfront.cloudfront_arn
 }
 
 module "iam" {
@@ -22,11 +23,13 @@ module "lambda" {
   source_bucket        = module.s3.source_bucket_name
   consolidated_bucket  = module.s3.consolidated_bucket_name
   source_bucket_arn    = module.s3.source_bucket_arn
-}
 
+}
 module "cloudfront" {
-  source                = "./modules/cloudfront"
-  s3_origin_domain_name = "${module.s3.consolidated_bucket_name}.s3.amazonaws.com"
+  source                    = "./modules/cloudfront"
+  s3_bucket_name            = module.s3.consolidated_bucket_name
+  s3_bucket_arn             = module.s3.consolidated_bucket_arn
+  s3_bucket_regional_domain = module.s3.s3_bucket_regional_domain
 }
 
 module "vpn" {

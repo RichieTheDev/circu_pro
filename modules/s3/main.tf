@@ -63,15 +63,40 @@ resource "aws_s3_bucket_server_side_encryption_configuration" "consolidated" {
   }
 }
 
-#lifecyle
-resource "aws_s3_bucket_lifecycle_configuration" "example" {
+resource "aws_s3_bucket_policy" "allow_cloudfront" {
   bucket = aws_s3_bucket.consolidated_bucket.id
-  rule {
-    id = "rule-1"
-    transition {
-      days          = 365
-      storage_class = "GLACIER_IR"
-    }
-    status = "Enabled"
+
+  policy = jsonencode({
+    Version = "2012-10-17",
+    Statement = [
+      {
+        Effect    = "Allow",
+        Principal = { Service = "cloudfront.amazonaws.com" },
+        Action    = "s3:GetObject",
+        Resource  = "${aws_s3_bucket.consolidated_bucket.arn}/*",
+        Condition = {
+          StringEquals = {
+            "AWS:SourceArn" = var.cloudfront_arn
+          }
+        }
+      }
+    ]
+  })
+}
+
+
+#intelligent tiering
+resource "aws_s3_bucket_intelligent_tiering_configuration" "example-entire-bucket" {
+  bucket = aws_s3_bucket.consolidated_bucket.id
+  name   = "ConsolidatedBucket"
+
+  tiering {
+    access_tier = "DEEP_ARCHIVE_ACCESS"
+    days        = 180
+  }
+  tiering {
+    access_tier = "ARCHIVE_ACCESS"
+    days        = 125
   }
 }
+

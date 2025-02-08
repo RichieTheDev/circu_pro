@@ -1,17 +1,19 @@
-# Create a CloudFront Origin Access Identity (OAI) to securely access S3
-resource "aws_cloudfront_origin_access_identity" "oai" {
-  comment = "OAI for CloudFront"
+# Create a CloudFront Origin Access Control (OAC) to securely access S3
+resource "aws_cloudfront_origin_access_control" "oac" {
+  name                              = "S3-OAC"
+  description                       = "OAC for CloudFront to access S3"
+  origin_access_control_origin_type = "s3"
+  signing_behavior                  = "always"
+  signing_protocol                  = "sigv4"
 }
 
 
 # Define CloudFront distribution with signed URL settings
 resource "aws_cloudfront_distribution" "cdn" {
   origin {
-    domain_name = var.s3_origin_domain_name
-    s3_origin_config {
-      origin_access_identity = aws_cloudfront_origin_access_identity.oai.cloudfront_access_identity_path
-    }
-    origin_id = "S3Origin"
+    domain_name              = var.s3_bucket_regional_domain
+    origin_id                = "S3Origin"
+    origin_access_control_id = aws_cloudfront_origin_access_control.oac.id
   }
 
   enabled = true
