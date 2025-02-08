@@ -7,6 +7,7 @@ This project sets up a secure and automated AWS cloud infrastructure using **Ter
 ## Infrastructure Components
 
 ![Architecture Diagram](image/1LAS.jpg)
+![1 Diagram](image/vpn.jpg)
 
 ### 1. **Amazon S3** (Simple Storage Service)
 

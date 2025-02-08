@@ -80,10 +80,10 @@ resource "aws_s3_bucket_policy" "first_recipe_bucket_policy" {
     Statement = [{
       Effect = "Allow",
       Principal = {
-        Service = "cloudfront.amazonaws.com"
+        Service = "s3.amazonaws.com"
       },
       Action   = "s3:GetObject",
-      Resource = "${aws_s3_bucket.consolidated_bucket.arn}/*",
+      Resource = "${aws_s3_bucket.source_bucket.arn}/*",
       Condition = {
         StringEquals = {
           "aws:SourceVpce" = var.s3_vpc_endpoint_id
@@ -112,7 +112,6 @@ resource "aws_s3_bucket_policy" "recipe_bucket_policy" {
     }]
   })
 }
-
 
 
 #intelligent tiering
