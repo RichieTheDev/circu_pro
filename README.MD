@@ -7,7 +7,6 @@ This project sets up a secure and automated AWS cloud infrastructure using **Ter
 ## Infrastructure Components
 
 ![Architecture Diagram](image/1LAS.jpg)
-![1 Diagram](image/vpn.jpg)
 
 ### 1. **Amazon S3** (Simple Storage Service)
 
@@ -187,4 +186,4 @@ s3_origin_domain_name = "youroriginname"
 
 This project provides a **secure, automated, and scalable** cloud infrastructure leveraging AWS services. The combination of **CloudFront, S3, Lambda, and VPN networking** ensures high performance, cost efficiency, and security in managing and distributing data.
 
-![Step 1 Diagram](image/1newa.jpg) ![Step2](image/1newb.jpg) ![step3](image/1newc.jpg)
+![Step 1 Diagram](image/1newa.jpg) ![1 Diagram](image/vpn.jpg) ![Step2](image/1newb.jpg) ![step3](image/1newc.jpg)
