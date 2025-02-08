@@ -94,17 +94,35 @@ This project sets up a secure and automated AWS cloud infrastructure using **Ter
 
 ## Deployment Instructions
 
-1. **Install Terraform**
+1.  **Install Terraform**
 
-   ```bash
-   wget https://releases.hashicorp.com/terraform/1.5.0/terraform_1.5.0_linux_amd64.zip
-   unzip terraform_1.5.0_linux_amd64.zip
-   mv terraform /usr/local/bin/
-   ```
-1b. **Clone from github**
-   
-    git clone https://github.com/RichieTheDev/circu_pro.git
- 
+    ```bash
+    wget https://releases.hashicorp.com/terraform/1.5.0/terraform_1.5.0_linux_amd64.zip
+    unzip terraform_1.5.0_linux_amd64.zip
+    mv terraform /usr/local/bin/
+    ```
+
+    1b. **Clone from github**
+
+        git clone https://github.com/RichieTheDev/circu_pro.git
+
+# Deploying Lambda Function to S3
+
+cd lambda_function
+
+## Zip the Lambda Function Code
+
+```sh
+zip -r lambda_function.zip index.py
+```
+
+## Upload the Zipped Function to Your S3 Bucket
+
+```sh
+aws s3 cp lambda_function.zip s3://your-consolidated-bucket/
+```
+
+Replace `your-consolidated-bucket` with the actual name of your S3 bucket.
 
 2. **Initialize Terraform**
 

@@ -22,12 +22,13 @@ def lambda_handler(event, context):
         print("Received event:", json.dumps(event, indent=2))
         
         # Iterate over each record in the event
-        for record in event["Records"]:
-            s3_object_key = record["s3"]["object"]["key"]  # Extract file key from event
-            print(f"Processing file: {s3_object_key}")
-            
-            # Process the file (zip and move)
-            zip_and_move_file(s3_object_key)
+        for record in event.get("Records", []):
+            if record.get("eventSource") == "aws:s3":
+                s3_object_key = record["s3"]["object"]["key"]  # Extract file key from event
+                print(f"Processing file: {s3_object_key}")
+                
+                # Process the file (zip and move)
+                zip_and_move_file(s3_object_key)
 
         return {"status": "Success", "message": "Files processed successfully"}
     

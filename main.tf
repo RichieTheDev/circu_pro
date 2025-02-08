@@ -8,6 +8,8 @@ module "s3" {
   source_bucket       = var.source_bucket
   consolidated_bucket = var.consolidated_bucket
   cloudfront_arn      = module.cloudfront.cloudfront_arn
+  lambda_role_arn     = module.iam.lambda_role_arn
+
 }
 
 module "iam" {

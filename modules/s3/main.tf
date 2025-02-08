@@ -24,6 +24,15 @@ resource "aws_s3_bucket_versioning" "consolidated" {
     status = "Enabled" # Enable versioning to prevent accidental data loss
   }
 }
+# Configure S3 event notification to trigger Lambda
+resource "aws_s3_bucket_notification" "s3_event_trigger" {
+  bucket = aws_s3_bucket.source_bucket.id
+
+  lambda_function {
+    lambda_function_arn = var.lambda_role_arn
+    events              = ["s3:ObjectCreated:*"]
+  }
+}
 
 # Restrict public access to the source bucket for security
 resource "aws_s3_bucket_public_access_block" "source" {
