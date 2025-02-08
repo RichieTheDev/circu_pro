@@ -27,6 +27,7 @@ resource "aws_cloudfront_distribution" "cdn" {
 
     compress    = true
     default_ttl = 3600
+    #trusted_key_groups = [aws_cloudfront_key_group.cf_key_group.id]
   }
 
   restrictions {
@@ -39,3 +40,17 @@ resource "aws_cloudfront_distribution" "cdn" {
     cloudfront_default_certificate = true
   }
 }
+
+# Upload the Public Key to CloudFront
+# resource "aws_cloudfront_public_key" "cf_public_key" {
+#   name        = "cloudfront-signed-url-key"
+#    encoded_key = file("public_key.pem")
+#   comment     = "Public key for signed URLs"
+# }
+
+# Create and Associate a CloudFront Key Group
+# resource "aws_cloudfront_key_group" "cf_key_group" {
+#   name    = "signed-url-key-group"
+#   comment = "Key group for signed URLs"
+#   items   = [aws_cloudfront_public_key.cf_public_key.id]
+# }

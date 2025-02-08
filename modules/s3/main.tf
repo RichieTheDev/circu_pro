@@ -72,26 +72,47 @@ resource "aws_s3_bucket_server_side_encryption_configuration" "consolidated" {
   }
 }
 
-resource "aws_s3_bucket_policy" "allow_cloudfront" {
+resource "aws_s3_bucket_policy" "first_recipe_bucket_policy" {
+  bucket = aws_s3_bucket.source_bucket.id
+
+  policy = jsonencode({
+    Version = "2012-10-17",
+    Statement = [{
+      Effect = "Allow",
+      Principal = {
+        Service = "cloudfront.amazonaws.com"
+      },
+      Action   = "s3:GetObject",
+      Resource = "${aws_s3_bucket.consolidated_bucket.arn}/*",
+      Condition = {
+        StringEquals = {
+          "aws:SourceVpce" = var.s3_vpc_endpoint_id
+        }
+      }
+    }]
+  })
+}
+resource "aws_s3_bucket_policy" "recipe_bucket_policy" {
   bucket = aws_s3_bucket.consolidated_bucket.id
 
   policy = jsonencode({
     Version = "2012-10-17",
-    Statement = [
-      {
-        Effect    = "Allow",
-        Principal = { Service = "cloudfront.amazonaws.com" },
-        Action    = "s3:GetObject",
-        Resource  = "${aws_s3_bucket.consolidated_bucket.arn}/*",
-        Condition = {
-          StringEquals = {
-            "AWS:SourceArn" = var.cloudfront_arn
-          }
+    Statement = [{
+      Effect = "Allow",
+      Principal = {
+        Service = "cloudfront.amazonaws.com"
+      },
+      Action   = "s3:GetObject",
+      Resource = "${aws_s3_bucket.consolidated_bucket.arn}/*",
+      Condition = {
+        StringEquals = {
+          "AWS:SourceArn" = var.cloudfront_arn
         }
       }
-    ]
+    }]
   })
 }
+
 
 
 #intelligent tiering

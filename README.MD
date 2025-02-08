@@ -150,6 +150,16 @@ Replace `your-consolidated-bucket` with the actual name of your S3 bucket.
 - `vpn_gateway_id`: ID of the created VPN Gateway.
 - `customer_gateway_id`: ID of the Customer Gateway.
 
+## Generate an RSA Key Pair for Signed URLs
+
+- You need a public/private key pair to sign URLs.
+- Run the following command to generate an RSA key pair:
+
+```sh
+openssl genrsa -out private_key.pem 2048
+openssl rsa -pubout -in private_key.pem -out public_key.pem
+```
+
 ## Cleanup
 
 To destroy the deployed resources, run:
@@ -169,12 +179,6 @@ consolidated_bucket = "your-consolidated-bucket"
 lambda_function_name = "your-lambda-function"
 source_bucket_arn       = "arn:aws:s3:::yoursourcearn"
 consolidated_bucket_arn = "arn:aws:s3:::yourconsolidatedarn"
-customer_gateway_ip  = "yourcustomerip"
-customer_gateway_asn = "yourcustomerasn"
-vpc_id               = "yourvpcid"
-allowed_prefixes     = ["youriprange"]
-dx_gateway_id        = ""
-transit_gateway_id   = ""
 s3_origin_domain_name = "youroriginname"
 ```
 

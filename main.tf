@@ -9,7 +9,7 @@ module "s3" {
   consolidated_bucket = var.consolidated_bucket
   cloudfront_arn      = module.cloudfront.cloudfront_arn
   lambda_role_arn     = module.iam.lambda_role_arn
-
+  s3_vpc_endpoint_id  = module.vpn.s3_vpc_endpoint_id
 }
 
 module "iam" {
