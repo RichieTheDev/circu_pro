@@ -10,6 +10,8 @@ This project sets up a secure and automated AWS cloud infrastructure using **Ter
 
 ### 1. **Amazon S3** (Simple Storage Service)
 
+![1STDiagram](image/S3.jpg)
+
 - **Source Bucket**: Stores incoming files before processing.
 - **Consolidated Bucket**: Stores processed (zipped) files.
 - **Security Measures**:
@@ -19,17 +21,23 @@ This project sets up a secure and automated AWS cloud infrastructure using **Ter
 
 ### 2. **AWS CloudFront** (Content Delivery Network)
 
+![2ND Diagram](image/DISRUU.jpg)
+
 - Serves content securely from the **Consolidated S3 Bucket**.
 - Uses an **Origin Access Control (OAI)** to restrict direct S3 access.
 - Enables caching for performance optimization.
 
 ### 3. **AWS Lambda** (Serverless Processing)
 
+![4TH Diagram](image/CONSOL.jpg)
+
 - Automatically triggered on new uploads to the **Source Bucket**.
 - Zips files and moves them to the **Consolidated Bucket**.
 - Uses IAM roles and policies to limit access to S3 operations.
 
 ### 4. **IAM (Identity and Access Management)**
+
+![5TH Diagram](image/SECURITY.jpg)
 
 - **IAM Role for Lambda**: Grants permissions to access S3 buckets.
 - **IAM Policies**:
@@ -38,6 +46,8 @@ This project sets up a secure and automated AWS cloud infrastructure using **Ter
   - Restricts access to only necessary actions.
 
 ### 5. **AWS Networking (VPN and Transit Gateway)**
+
+![3RD Diagram](image/network.jpg)
 
 - **Site to Site VPN Gateway**: Establishes an ipsec encrypted tunnel between on prem and aws.
 - **Transit Gateway**: Routes traffic between on-premises networks and AWS.
