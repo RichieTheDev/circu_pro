@@ -10,7 +10,7 @@ This project sets up a secure and automated AWS cloud infrastructure using **Ter
 
 ### 1. **Amazon S3** (Simple Storage Service)
 
-![1STDiagram](image/S3.jpg)
+![1STDiagram](image/s3.jpg)
 
 - **Source Bucket**: Stores incoming files before processing.
 - **Consolidated Bucket**: Stores processed (zipped) files.
