@@ -13,15 +13,15 @@ This project sets up a secure and automated AWS cloud infrastructure using **Ter
 - **Source Bucket**: Stores incoming files before processing.
 - **Consolidated Bucket**: Stores processed (zipped) files.
 - **Security Measures**:
-  - Server-side encryption (AES-256) enabled for both buckets.
+  - Server-side encryption (kms) enabled for both buckets.
   - Public access is blocked.
   - Versioning enabled to retain file history and prevent accidental deletion.
 
 ### 2. **AWS CloudFront** (Content Delivery Network)
 
 - Serves content securely from the **Consolidated S3 Bucket**.
-- Uses an **Origin Access Identity (OAI)** to restrict direct S3 access.
-- Enforces HTTPS and enables caching for performance optimization.
+- Uses an **Origin Access Control (OAI)** to restrict direct S3 access.
+- Enables caching for performance optimization.
 
 ### 3. **AWS Lambda** (Serverless Processing)
 
@@ -39,7 +39,7 @@ This project sets up a secure and automated AWS cloud infrastructure using **Ter
 
 ### 5. **AWS Networking (VPN and Transit Gateway)**
 
-- **Direct Connect Gateway**: Establishes a dedicated network connection to AWS.
+- **Site to Site VPN Gateway**: Establishes an ipsec encrypted tunnel between on prem and aws.
 - **Transit Gateway**: Routes traffic between on-premises networks and AWS.
 - **Customer Gateway**: Defines the on-premises VPN endpoint.
 
@@ -65,6 +65,11 @@ This project sets up a secure and automated AWS cloud infrastructure using **Ter
 - Misconfigurations can lead to security risks.
 - Requires a learning curve for teams unfamiliar with Terraform.
 
+**Important Considerations:**
+
+- Secure sensitive data (e.g., API keys) using parameter stores or secrets management tools.
+- Implement CI/CD pipelines for testing IaC changes before deployment.
+
 ### **IoT and Edge Computing**
 
 **Benefits:**
@@ -72,25 +77,32 @@ This project sets up a secure and automated AWS cloud infrastructure using **Ter
 - Reduces latency by processing data closer to the source.
 - Reduces bandwidth costs by filtering and preprocessing data before sending it to the cloud.
 
-**Considerations:**
+**Potential Pitfalls:**
 
-- Requires security measures to prevent unauthorized access.
-- Edge devices may have limited processing power.
+- Limited processing power at edge devices can be a constraint. Synchronization issues may arise between cloud storage and edge nodes, leading to data inconsistency.
+
+**Important Considerations:**
+
+- Use lightweight models and efficient communication protocols (e.g., MQTT) for IoT devices.
+- Implement security measures like encrypted data transmission and device authentication to prevent breaches.
 
 ### **Cost Calculation and Optimization**
 
-**Cost Factors:**
+**Benefits:**
 
 - S3 storage and data transfer fees.
 - Lambda execution time and memory usage.
 - CloudFront caching reduces origin data transfer costs.
-- Direct Connect pricing for dedicated network connections.
 
-**Optimizations:**
+**Potential Pitfalls:**
 
-- Enabling compression and caching in CloudFront reduces data transfer costs.
-- Using lifecycle policies in S3 to transition old files to **Glacier** for lower-cost archival storage.
-- Optimizing Lambda execution time and memory allocation to reduce compute costs.
+- Over-provisioning storage, unnecessary API calls, and inefficient CloudFront caching policies can drive up costs.
+- Not monitoring usage patterns may lead to unexpected expenses.
+
+**Important Considerations:**
+
+- Use AWS Cost Explorer and Budgets to track spending. Implement lifecycle policies to archive or delete stale data.
+- Optimize CloudFront caching and leverage Reserved Instances where applicable.
 
 ## Deployment Instructions
 
