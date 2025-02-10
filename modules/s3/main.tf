@@ -16,7 +16,26 @@ resource "aws_s3_bucket_versioning" "source" {
     status = "Enabled" # Enable versioning for better file tracking and recovery
   }
 }
+resource "aws_s3_bucket_object_lock_configuration" "first_bucket" {
+  bucket = aws_s3_bucket.source_bucket.id
 
+  rule {
+    default_retention {
+      mode = "COMPLIANCE"
+      days = 5
+    }
+  }
+}
+resource "aws_s3_bucket_object_lock_configuration" "second_bucket" {
+  bucket = aws_s3_bucket.consolidated_bucket.id
+
+  rule {
+    default_retention {
+      mode = "COMPLIANCE"
+      days = 5
+    }
+  }
+}
 # Enable versioning on the consolidated bucket to retain different versions of zip archives
 resource "aws_s3_bucket_versioning" "consolidated" {
   bucket = aws_s3_bucket.consolidated_bucket.id
@@ -115,17 +134,37 @@ resource "aws_s3_bucket_policy" "recipe_bucket_policy" {
 
 
 #intelligent tiering
-resource "aws_s3_bucket_intelligent_tiering_configuration" "example-entire-bucket" {
-  bucket = aws_s3_bucket.consolidated_bucket.id
-  name   = "ConsolidatedBucket"
+# resource "aws_s3_bucket_intelligent_tiering_configuration" "example-entire-bucket" {
+#   bucket = aws_s3_bucket.consolidated_bucket.id
+#   name   = "ConsolidatedBucket"
 
-  tiering {
-    access_tier = "DEEP_ARCHIVE_ACCESS"
-    days        = 180
-  }
-  tiering {
-    access_tier = "ARCHIVE_ACCESS"
-    days        = 125
+#   tiering {
+#     access_tier = "DEEP_ARCHIVE_ACCESS"
+#     days        = 180
+#   }
+#   tiering {
+#     access_tier = "ARCHIVE_ACCESS"
+#     days        = 125
+#   }
+# }
+
+#lifecyle plan
+resource "aws_s3_bucket_lifecycle_configuration" "consol" {
+  bucket = aws_s3_bucket.consolidated_bucket.id
+
+  rule {
+    id     = "move-old-versions-to-glacier"
+    status = "Enabled"
+
+    filter {}
+
+    noncurrent_version_transition {
+      noncurrent_days = 30
+      storage_class   = "GLACIER"
+    }
+
+    noncurrent_version_expiration {
+      noncurrent_days = 90
+    }
   }
 }
-
